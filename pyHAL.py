@@ -48,7 +48,7 @@ def velo_verlet_com(at, ani2x, dt, tau, minF):
 
     return at, p, F_RMSE, varE
 
-def HAL(at, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, minF=0.1, pmax=0.3, dt=0.5):
+def HAL(at, fname, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, minF=0.1, pmax=0.3, dt=0.5):
     Ps = []
     varEs = []
     Es = []
@@ -96,6 +96,6 @@ def HAL(at, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, minF=0.1, pmax=0.3, dt=0.
     axs[3].plot(F_RMSEs)
     axs[3].set_ylabel("F_RMSE")
     axs[3].set_xlabel("MD step")
-    plt.savefig("report.pdf")
+    plt.savefig("report_{}.pdf".format(fname))
 
-    write("./selected_config.xyz", al)
+    write("./selected_config_{}.xyz".format(fname), al)
