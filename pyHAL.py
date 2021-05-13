@@ -27,7 +27,7 @@ def get_comm_energy_forces(ani2x, at):
 
     return meanE, varE, meanF, varF, F_RMSE
 
-def velo_verlet_com(at, ani2x, dt, tau, minF):
+def velo_verlet_com(at, ani2x, dt, tau):
     meanE, varE, meanF, varF, F_RMSE = get_comm_energy_forces(ani2x, at)
     forces = meanF - tau * varF
 
@@ -44,11 +44,11 @@ def velo_verlet_com(at, ani2x, dt, tau, minF):
 
     at.set_momenta(at.get_momenta() + 0.5 * dt * forces)
 
-    p = np.max(np.linalg.norm(varF, axis=1) / (np.linalg.norm(meanF, axis=1) + minF))
+    p = np.max(np.linalg.norm(varF, axis=1))
 
     return at, p, F_RMSE, varE
 
-def HAL(at, fname, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, minF=0.1, pmax=0.3, dt=0.5):
+def HAL(at, fname, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, Fmax=0.3, dt=0.5):
     Ps = []
     varEs = []
     Es = []
@@ -61,7 +61,7 @@ def HAL(at, fname, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, minF=0.1, pmax=0.3
     running = True
     while running and i < nsteps:
         print(i, tau)
-        at, p, F_RMSE, varE = velo_verlet_com(at, ani2x, dt * fs, tau, minF)
+        at, p, F_RMSE, varE = velo_verlet_com(at, ani2x, dt * fs, tau)
         Ps.append(p)
         varEs.append(varE)
         F_RMSEs.append(F_RMSE)
@@ -69,7 +69,7 @@ def HAL(at, fname, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, minF=0.1, pmax=0.3
         #al.append(deepcopy(at))
         if i % ntau == 0:
             tau += dtau
-        if p > pmax or i+2 > nsteps:
+        if p > Fmax or i+2 > nsteps:
             running = False
             al.append(at)
         i+=1
