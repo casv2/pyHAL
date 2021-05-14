@@ -52,7 +52,6 @@ def HAL(at, fname, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, Fmax=0.3, dt=0.5):
     Ps = []
     varEs = []
     Es = []
-    F_RMSEs = []
     al = []
 
     ani2x = torchani.models.ANI2x()
@@ -64,7 +63,6 @@ def HAL(at, fname, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, Fmax=0.3, dt=0.5):
         at, p, F_RMSE, varE = velo_verlet_com(at, ani2x, dt * fs, tau)
         Ps.append(p)
         varEs.append(varE)
-        F_RMSEs.append(F_RMSE)
         Es.append(at.get_potential_energy())
         #al.append(deepcopy(at))
         if i % ntau == 0:
@@ -86,16 +84,13 @@ def HAL(at, fname, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, Fmax=0.3, dt=0.5):
     # write("at_varE_max.xyz", al[varE_ind])
     # write("at_F_RMSE_max.xyz", al[F_RMSE_ind])
 
-    fig, axs = plt.subplots(4, figsize=(6,8))
+    fig, axs = plt.subplots(3, figsize=(6,8))
     axs[0].plot(Es)
     axs[0].set_ylabel("E")
     axs[1].plot(varEs)
     axs[1].set_ylabel("varE")
     axs[2].plot(Ps)
     axs[2].set_ylabel("max | F_s |")
-    axs[3].plot(F_RMSEs)
-    axs[3].set_ylabel("F_RMSE")
-    axs[3].set_xlabel("MD step")
     plt.savefig("report_{}.pdf".format(fname))
 
     write("./selected_config_{}.xyz".format(fname), al)
