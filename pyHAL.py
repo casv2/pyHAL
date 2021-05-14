@@ -92,7 +92,7 @@ def HAL(at, fname, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, Fmax=0.3, dt=0.5):
     axs[1].plot(varEs)
     axs[1].set_ylabel("varE")
     axs[2].plot(Ps)
-    axs[2].set_ylabel("P")
+    axs[2].set_ylabel("max | F_s |")
     axs[3].plot(F_RMSEs)
     axs[3].set_ylabel("F_RMSE")
     axs[3].set_xlabel("MD step")
