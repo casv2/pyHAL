@@ -103,4 +103,4 @@ def HAL(at, fname, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, Fu_max=0.3, dt=0.5
 
         write("./selected_config_{}.xyz".format(fname), al)
     else:
-        return Es, varEs
+        return Es, Fu_s
