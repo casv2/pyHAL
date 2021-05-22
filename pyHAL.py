@@ -8,6 +8,7 @@ import torchani
 import numpy as np
 import torch
 import ase
+from copy import deepcopy
 
 def get_comm_energy_forces(ani2x,model, at):
     Fs = []
@@ -122,7 +123,8 @@ def HAL(at, fname, nsteps=1000, tau=0.01, dtau=0.1, ntau=100, Fu_max=0.3, dt=0.5
             tau += dtau
         if Fu > Fu_max:
             at.info["Fu"]= Fu
-            al.append(at)
+            at2 = deepcopy(at)
+            al.append(at2)
         if T > 1000:
             running= False
         i+=1
